@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 926d334fea032ae499b06d5d5c767ffb, type: 3}
+  m_Name: VFXRepository
+  m_EditorClassIdentifier: 
+  _particleObject:
+  - _type: 0
+    _particleSystemPrefab: {fileID: 8588536228820613126, guid: 6bb278ac2685b78498a9b2408fa03d3f, type: 3}
