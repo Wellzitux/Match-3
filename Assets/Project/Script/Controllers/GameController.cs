@@ -5,6 +5,7 @@ using Gazeus.DesafioMatch3.Core;
 using Gazeus.DesafioMatch3.Models;
 using Gazeus.DesafioMatch3.Views;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Gazeus.DesafioMatch3.Controllers
 {
@@ -13,11 +14,14 @@ namespace Gazeus.DesafioMatch3.Controllers
         [SerializeField] private BoardView _boardView;
         [SerializeField] private int _boardHeight = 10;
         [SerializeField] private int _boardWidth = 10;
+        [SerializeField] private bool _allowBombExplosion;
 
         private GameService _gameEngine;
         private bool _isAnimating;
         private int _selectedX = -1;
         private int _selectedY = -1;
+
+        public static UnityEvent OnBoardAnimationFinished = new UnityEvent();
 
         #region Unity
         private void Awake()
@@ -33,7 +37,7 @@ namespace Gazeus.DesafioMatch3.Controllers
 
         private void Start()
         {
-            List<List<Tile>> board = _gameEngine.StartGame(_boardWidth, _boardHeight);
+            List<List<Tile>> board = _gameEngine.StartGame(_boardWidth, _boardHeight, _allowBombExplosion);
             _boardView.CreateBoard(board);
         }
         #endregion
@@ -43,9 +47,9 @@ namespace Gazeus.DesafioMatch3.Controllers
             BoardSequence boardSequence = boardSequences[index];
 
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(_boardView.DestroyTiles(boardSequence.MatchedPosition));
+            sequence.Append(_boardView.DestroyTiles(boardSequence.MatchedPosition, boardSequence.ExplosionPosition));
             sequence.Append(_boardView.MoveTiles(boardSequence.MovedTiles));
-            sequence.Append(_boardView.CreateTile(boardSequence.AddedTiles));
+            sequence.Append(_boardView.CreateTile(boardSequence.AddedTiles)).SetDelay(1);
 
             index += 1;
             if (index < boardSequences.Count)
@@ -55,6 +59,7 @@ namespace Gazeus.DesafioMatch3.Controllers
             else
             {
                 sequence.onComplete += () => onComplete();
+                OnBoardAnimationFinished?.Invoke();
             }
         }
 

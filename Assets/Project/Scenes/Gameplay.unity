@@ -467,6 +467,10 @@ PrefabInstance:
       propertyPath: _boardView
       value: 
       objectReference: {fileID: 429446043}
+    - target: {fileID: 2877625323120250173, guid: ad6452bffccc7f643ae3b305834781c0, type: 3}
+      propertyPath: _allowBombExplosion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3023238493824327231, guid: ad6452bffccc7f643ae3b305834781c0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -530,6 +534,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1311934774003134646, guid: 90b6f2a7fc71f24428ff7a9b20d1d1fb, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1311934774003134646, guid: 90b6f2a7fc71f24428ff7a9b20d1d1fb, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1311934774003134646, guid: 90b6f2a7fc71f24428ff7a9b20d1d1fb, type: 3}
