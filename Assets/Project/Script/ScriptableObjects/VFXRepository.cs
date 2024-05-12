@@ -24,5 +24,5 @@ namespace Gazeus.DesafioMatch3
         public ParticleSystem _particleSystemPrefab;
     }
 
-    public enum VFXType { Explosion }
+    public enum VFXType { Explosion, MatchVFX }
 }

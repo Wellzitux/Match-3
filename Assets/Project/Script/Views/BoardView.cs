@@ -75,15 +75,19 @@ namespace Gazeus.DesafioMatch3.Views
             return sequence;
         }
 
-        public Tween DestroyTiles(List<Vector2Int> matchedPosition)
+        public Tween DestroyTiles(List<Vector2Int> matchedPosition, List<Vector2Int> bombPositions)
         {
+            for (int i = 0; i < bombPositions.Count; i++)
+            {
+                VFXPoolingSystem.SpawnVFX(VFXType.Explosion, new Vector3(bombPositions[i].x, bombPositions[i].y, 0));
+            }
             for (int i = 0; i < matchedPosition.Count; i++)
             {
                 Vector2Int position = matchedPosition[i];
+                VFXPoolingSystem.SpawnVFX?.Invoke(VFXType.MatchVFX,new Vector3(_tiles[position.y][position.x].transform.parent.transform.localPosition.x, _tiles[position.y][position.x].transform.parent.transform.localPosition.y, 0));
                 Destroy(_tiles[position.y][position.x]);
                 _tiles[position.y][position.x] = null;
             }
-
             return DOVirtual.DelayedCall(0.2f, () => { });
         }
 

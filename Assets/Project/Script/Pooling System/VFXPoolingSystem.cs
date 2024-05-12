@@ -41,6 +41,7 @@ namespace Gazeus.DesafioMatch3
                 List<ParticleSystem> vfxPool = new List<ParticleSystem>();
                 _vfxPool.Add(vfx._type.ToString(), vfxPool);
                 ParticleSystem newVFX = Instantiate(vfx._particleSystemPrefab, transform);
+                newVFX.gameObject.SetActive(false);
                 vfxPool.Add(newVFX);
             }
         }

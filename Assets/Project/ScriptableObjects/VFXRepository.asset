@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _particleObject:
   - _type: 0
+    _particleSystemPrefab: {fileID: 7022860355873897342, guid: 15f319c4b5e132b4895696bb56c83afd, type: 3}
+  - _type: 1
     _particleSystemPrefab: {fileID: 8588536228820613126, guid: 6bb278ac2685b78498a9b2408fa03d3f, type: 3}
