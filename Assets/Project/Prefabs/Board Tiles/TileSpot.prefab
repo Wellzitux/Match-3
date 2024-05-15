@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -51,6 +50,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button: {fileID: 3397252726085345414}
+  _rectTransform: {fileID: 928004715130932088}
+  _tweenData: {fileID: 11400000, guid: 41eb52d98d42a1a49b63df5401e8f819, type: 2}
+  _OnButtonClicked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3397252726085345414
 MonoBehaviour:
   m_ObjectHideFlags: 0
