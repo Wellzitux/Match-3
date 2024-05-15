@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 namespace Gazeus.DesafioMatch3
 {
@@ -34,6 +32,10 @@ namespace Gazeus.DesafioMatch3
             SpawnVFX -= GetVFX;
         }
 
+        #endregion
+
+        #region Methods
+
         private void InitializeList()
         {
             foreach(VFX vfx in _vfxRepository._particleObject)
@@ -55,7 +57,7 @@ namespace Gazeus.DesafioMatch3
 
                 foreach (ParticleSystem vfx in list)
                 {
-                    if (!vfx.gameObject.active)
+                    if (!vfx.gameObject.activeInHierarchy)
                     {
                         vfx.gameObject.SetActive(true);
                         vfx.GetComponent<RectTransform>().anchoredPosition = position;
@@ -84,45 +86,8 @@ namespace Gazeus.DesafioMatch3
 
         }
 
-        [ContextMenu("Get")]
-        private void teste()
-        {
-            SpawnVFX(VFXType.Explosion, Vector3.zero);
-        }
-
-
-        private void InitializePool()
-        {
-
-        }
-
-        private void DestroyParticle(ParticleSystem particleSystem)
-        {
-
-        }
 
         #endregion
-
-        #region Methods
-
-
-        private void GetVFX()
-        {
-   
-        }
-
-        private void ReturnVFX(Dictionary<string, ParticleSystem> asd)
-        {
-
-        }
-
-        private void Destroyth()
-        {
-
-        }
-        #endregion
-
-
 
     }
 }

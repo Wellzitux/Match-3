@@ -11,6 +11,9 @@ namespace Gazeus.DesafioMatch3.Views
 {
     public class BoardView : MonoBehaviour
     {
+
+        #region Variables
+
         public event Action<int, int> TileClicked;
 
         [SerializeField] private GridLayoutGroup _boardContainer;
@@ -24,6 +27,8 @@ namespace Gazeus.DesafioMatch3.Views
         private TileSpotView[][] _tileSpots;
         private bool _boardIsAnimating;
 
+        #endregion
+
         #region Unity
 
         private void OnEnable()
@@ -36,6 +41,8 @@ namespace Gazeus.DesafioMatch3.Views
         }
 
         #endregion
+
+        #region Method
 
         public void CreateBoard(List<List<Tile>> board)
         {
@@ -207,6 +214,8 @@ namespace Gazeus.DesafioMatch3.Views
             _boardIsAnimating = state;
             DeactivateTileVisual(state);
         }
+
+        #endregion
 
         #region Events
         private void TileSpot_Clicked(int x, int y)

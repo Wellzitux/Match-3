@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SpriteAtlas_UI
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 091d17180cf60854cb78bbd470c6ad20, type: 3}
+    - {fileID: 2800000, guid: dab231a37dbbe744484d25339050fcff, type: 3}
+    - {fileID: 2800000, guid: b2449e878dcae9c4b948aec4d7306bc4, type: 3}
+    - {fileID: 2800000, guid: 6e1b6704a15485d41b8fc82536659f6b, type: 3}
+    - {fileID: 2800000, guid: af3021dc680c55346ac236225e8689e5, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - dab231a37dbbe744484d25339050fcff: 21300000
+    - 6e1b6704a15485d41b8fc82536659f6b: 21300000
+    - b2449e878dcae9c4b948aec4d7306bc4: 818275109
+    - 091d17180cf60854cb78bbd470c6ad20: 21300000
+    - af3021dc680c55346ac236225e8689e5: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: dab231a37dbbe744484d25339050fcff, type: 3}
+  - {fileID: 21300000, guid: 6e1b6704a15485d41b8fc82536659f6b, type: 3}
+  - {fileID: 818275109, guid: b2449e878dcae9c4b948aec4d7306bc4, type: 3}
+  - {fileID: 21300000, guid: 091d17180cf60854cb78bbd470c6ad20, type: 3}
+  - {fileID: 21300000, guid: af3021dc680c55346ac236225e8689e5, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - sprt_home
+  - sprt_square
+  - sprt_menuBackground_0
+  - sprt_buttonBackground
+  - sprt_transitionClouds
+  m_RenderDataMap: {}
+  m_Tag: SpriteAtlas_UI
+  m_IsVariant: 0

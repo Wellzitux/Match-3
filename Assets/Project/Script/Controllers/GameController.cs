@@ -11,18 +11,26 @@ namespace Gazeus.DesafioMatch3.Controllers
 {
     public class GameController : MonoBehaviour
     {
+
+        #region Variables
+
         [SerializeField] private BoardView _boardView;
         [SerializeField] private int _boardHeight = 10;
         [SerializeField] private int _boardWidth = 10;
-        [SerializeField] private bool _allowBombExplosion;
 
         private GameService _gameEngine;
         private bool _isAnimating;
         private int _selectedX = -1;
         private int _selectedY = -1;
 
-        public static UnityEvent<bool> OnBoardAnimateStateChanged = new UnityEvent<bool>();
+        #endregion
 
+        #region Events
+
+        public static UnityEvent<bool> OnBoardAnimateStateChanged = new UnityEvent<bool>();
+        
+        #endregion
+        
         #region Unity
 
         private void Awake()
@@ -38,10 +46,13 @@ namespace Gazeus.DesafioMatch3.Controllers
 
         private void Start()
         {
-            List<List<Tile>> board = _gameEngine.StartGame(_boardWidth, _boardHeight, _allowBombExplosion);
+            List<List<Tile>> board = _gameEngine.StartGame(_boardWidth, _boardHeight);
             _boardView.CreateBoard(board);
         }
+
         #endregion
+
+        #region Methods
 
         private void AnimateBoard(List<BoardSequence> boardSequences, int index, Action onComplete)
         {
@@ -106,5 +117,7 @@ namespace Gazeus.DesafioMatch3.Controllers
             _isAnimating = state;
             OnBoardAnimateStateChanged?.Invoke(_isAnimating);
         }
+
+        #endregion
     }
 }

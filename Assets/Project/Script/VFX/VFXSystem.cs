@@ -1,11 +1,6 @@
-using DG.Tweening;
-using Gazeus.DesafioMatch3.Controllers;
-using Gazeus.DesafioMatch3.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Gazeus.DesafioMatch3
 {
@@ -71,23 +66,16 @@ namespace Gazeus.DesafioMatch3
             }
         }
 
-        private void ClearQueue()
-        {
-            if ( _vfxQueu!= null)
-                _vfxQueu.Clear();
-        }
-
         #endregion
     }
-    
+
+    #region Struct
+
     public struct PlayVFX
     {
         public VFXType _type { get; set; }
         public Vector2 _position { get; set; }
     }
 
-    public class VFXQueu
-    {
-        
-    }
+    #endregion
 }

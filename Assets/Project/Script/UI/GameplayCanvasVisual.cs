@@ -11,7 +11,6 @@ namespace Gazeus.DesafioMatch3
 
         [SerializeField] private float startGameDelay;
         [SerializeField] private Button _homeButton;
-        [SerializeField] private Transform _camera;
         [SerializeField] private TweenData _tweenData;
 
         [SerializeField] private Canvas _gameplayCanvas;

@@ -1,17 +1,20 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Gazeus.DesafioMatch3.Models;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Gazeus.DesafioMatch3.Core
 {
     public class GameService
     {
+        #region Variables
+
         private List<List<Tile>> _boardTiles;
         private List<int> _tilesTypes;
         private int _tileCount;
+
+        #endregion
+
+        #region Methods
 
         public bool IsValidMovement(int fromX, int fromY, int toX, int toY)
         {
@@ -42,7 +45,7 @@ namespace Gazeus.DesafioMatch3.Core
             return false;
         }
 
-        public List<List<Tile>> StartGame(int boardWidth, int boardHeight, bool bombMechanic = false)
+        public List<List<Tile>> StartGame(int boardWidth, int boardHeight)
         {
             _tilesTypes = new List<int> { 0, 1, 2, 3 };
             _boardTiles = CreateBoard(boardWidth, boardHeight, _tilesTypes);
@@ -429,7 +432,6 @@ namespace Gazeus.DesafioMatch3.Core
 
         private bool HasBombMatch(List<List<bool>> boardMatches)
         {
-            int numberOfMatches = 0;
             for (int x = 0; x < boardMatches.Count; x++)
             {
                 for (int y = 0; y < boardMatches.Count; y++)
@@ -456,6 +458,7 @@ namespace Gazeus.DesafioMatch3.Core
 
             return false;
         }
-
+        
+        #endregion
     }
 }
