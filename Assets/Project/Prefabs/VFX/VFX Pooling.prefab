@@ -76,3 +76,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b69d49c37ab999946874656fb98e6ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _vfxRepository: {fileID: 11400000, guid: 7f34c6519fd530c4eba8ca7ca956bf0f, type: 2}
