@@ -12,7 +12,6 @@ namespace Gazeus.DesafioMatch3.Core
         private List<List<Tile>> _boardTiles;
         private List<int> _tilesTypes;
         private int _tileCount;
-        private bool _bombMechanic;
 
         public bool IsValidMovement(int fromX, int fromY, int toX, int toY)
         {
@@ -47,7 +46,6 @@ namespace Gazeus.DesafioMatch3.Core
         {
             _tilesTypes = new List<int> { 0, 1, 2, 3 };
             _boardTiles = CreateBoard(boardWidth, boardHeight, _tilesTypes);
-            _bombMechanic = bombMechanic;
             return _boardTiles;
         }
 
@@ -66,6 +64,7 @@ namespace Gazeus.DesafioMatch3.Core
 
             if (HasBombMatch(bombAffectedTiles))
             {
+                bombPosition = (FindBombPosition(newBoard));
                 bombAffectedTiles = FindBombAffectedTiles(bombAffectedTiles);
                 matchedTiles = bombAffectedTiles;
             }
@@ -76,8 +75,6 @@ namespace Gazeus.DesafioMatch3.Core
 
                 //Cleaning the matched tiles
                 List<Vector2Int> matchedPosition = new();
-
-
                 for (int y = 0; y < newBoard.Count; y++)
                 {
                     for (int x = 0; x < newBoard[y].Count; x++)
@@ -163,8 +160,10 @@ namespace Gazeus.DesafioMatch3.Core
                 matchedTiles = FindMatches(newBoard);
 
                 bombAffectedTiles = FindBombMatches(newBoard);
+                bombPosition = new();
                 if (HasBombMatch(bombAffectedTiles))
                 {
+                    bombPosition = (FindBombPosition(newBoard));
                     bombAffectedTiles = FindBombAffectedTiles(bombAffectedTiles);
                     matchedTiles = SumAllMatchesFound(bombAffectedTiles, matchedTiles);
                 }
@@ -300,6 +299,7 @@ namespace Gazeus.DesafioMatch3.Core
                         bombMatchedTiles[y][x - 1] = true;
                         bombMatchedTiles[y][x - 2] = true;
                         bombMatchedTiles[y][x - 3] = true;
+                        
                     }
 
                     if (y > 2 &&
@@ -332,42 +332,6 @@ namespace Gazeus.DesafioMatch3.Core
                 }
             }
             return commomMatches;
-        }
-
-        private List<List<bool>> FindAffectedTilesByBomb(List<List<bool>> originalBombMatchedTiles)
-        {
-            List<List<bool>> bombMatchedTiles = new List<List<bool>>();
-
-
-            for (int y = 0; y < originalBombMatchedTiles.Count; y++)
-            {
-                bombMatchedTiles.Add(new List<bool>(originalBombMatchedTiles[y].Count));
-                for (int x = 0; x < originalBombMatchedTiles.Count; x++)
-                {
-                    bombMatchedTiles[y].Add(false);
-                }
-            }
-
-            for (int x = 0; x < originalBombMatchedTiles.Count; x++)
-            {
-                for (int y = 0; y < originalBombMatchedTiles.Count; y++)
-                {
-                    bombMatchedTiles[y][x] = originalBombMatchedTiles[y][x];
-                }
-            }
-            for (int x = 0; x < originalBombMatchedTiles.Count; x++)
-            {
-                for (int y = 0; y < originalBombMatchedTiles[x].Count; y++)
-                {
-                    if (originalBombMatchedTiles[y][x])
-                    {
-                        bombMatchedTiles = MarkBombedTile(bombMatchedTiles, new Vector2Int(y, x));
-                    }
-                }
-            }
-
-            return bombMatchedTiles;
-
         }
 
         private List<List<bool>> FindBombAffectedTiles(List<List<bool>> matchedTiles)
@@ -404,19 +368,42 @@ namespace Gazeus.DesafioMatch3.Core
 
             return bombMatchedTiles;
         }
-        private Vector2Int FindBombPosition(List<List<bool>> matchedTiles)
+
+        private List<Vector2Int> FindBombPosition(List<List<Tile>> newBoard)
         {
-            List<Vector2Int> bombPositions = new();
-            for (int y = 0; y < matchedTiles.Count; y++)
+            List<Vector2Int> bombPosition = new ();
+
+            for (int y = 0; y < newBoard.Count; y++)
             {
-                for (int x = 0; x < matchedTiles.Count; x++)
+                for (int x = 0; x < newBoard[y].Count; x++)
                 {
-                    if (matchedTiles[y][x])
-                        bombPositions.Add(new Vector2Int(y, x));
+                    if (x > 2 &&
+                        newBoard[y][x].Type == newBoard[y][x - 1].Type &&
+                        newBoard[y][x - 1].Type == newBoard[y][x - 2].Type &&
+                        newBoard[y][x - 2].Type == newBoard[y][x - 3].Type)
+                    {
+                        if (!bombPosition.Contains(new Vector2Int(y, x-1)) ||
+                            !bombPosition.Contains(new Vector2Int(y, x - 2)) ||
+                            !bombPosition.Contains(new Vector2Int(y, x - 3)))
+                                bombPosition.Add(new Vector2Int(y,x-1));
+                    }
+
+                    if (y > 2 &&
+                        newBoard[y][x].Type == newBoard[y - 1][x].Type &&
+                        newBoard[y - 1][x].Type == newBoard[y - 2][x].Type &&
+                        newBoard[y - 2][x].Type == newBoard[y - 3][x].Type)
+                    {
+                        if (!bombPosition.Contains(new Vector2Int(y-1, x)) ||
+                            !bombPosition.Contains(new Vector2Int(y-2, x)) ||
+                            !bombPosition.Contains(new Vector2Int(y-3, x)))
+                            bombPosition.Add(new Vector2Int(y-1,x));
+
+                    }
                 }
             }
 
-            return bombPositions[bombPositions.Count / 2];
+            return bombPosition;
+
         }
 
         private List<List<bool>> MarkBombedTile(List<List<bool>> matchedTilesList, Vector2Int matchedTiles)

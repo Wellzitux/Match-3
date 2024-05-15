@@ -3,9 +3,6 @@ using System;
 using System.Linq;
 using System.Collections;
 using UnityEngine.SceneManagement;
-using DG.Tweening;
-using System.Threading;
-using Codice.Client.BaseCommands;
 using UnityEngine.EventSystems;
 
 namespace Gazeus.DesafioMatch3
@@ -16,12 +13,15 @@ namespace Gazeus.DesafioMatch3
         #region Variables
 
         [SerializeField] private Canvas _transitionCanvas;
-        [SerializeField] private CanvasGroup _transitionCanvasGroup;
         [SerializeField] private ScenesRepository _sceneListSO;
+
+        [SerializeField] private Animation _transitionAnimationComponent;
+        [SerializeField] private AnimationClip _entranceAnimationClip;
+        [SerializeField] private AnimationClip _exitAnimationClip;
 
         private string _loadingSceneName;
         private Coroutine _transitionRoutine;
-        private Tween _fadeTween;
+
         #endregion
 
         #region Events
@@ -37,6 +37,9 @@ namespace Gazeus.DesafioMatch3
         private void OnEnable()
         {
             StartTransition += StartSceneTransition;
+
+            if (_transitionCanvas.enabled == true)
+                ToggleCanvas(false);
         }
 
         private void OnDisable()
@@ -47,18 +50,6 @@ namespace Gazeus.DesafioMatch3
         #endregion
 
         #region Methods
-
-        [ContextMenu("Teste")]
-        private void TestUnitario()
-        {
-            StartSceneTransition(SceneListEnum.LoadableScenes.GAMEPLAY);
-        }
-
-        [ContextMenu("Voltar")]
-        private void TestUnitario2()
-        {
-            StartSceneTransition(SceneListEnum.LoadableScenes.MENU);
-        }
 
         private void StartSceneTransition(SceneListEnum.LoadableScenes sceneToLoad)
         {
@@ -85,27 +76,38 @@ namespace Gazeus.DesafioMatch3
 
         IEnumerator LoadingSceneRoutine()
         {
+
             ToggleEventSystem(false);
 
-            FadeCanvas(true);
+            ToggleCanvas(true);
 
-            yield return new WaitUntil(() => !_fadeTween.active);
+            PlayTransitionAnimation(true);
+
+            yield return new WaitUntil(() => !_transitionAnimationComponent.isPlaying);
 
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(_loadingSceneName, LoadSceneMode.Single);
 
             yield return new WaitUntil(()=> asyncLoad.isDone);
 
-            FadeCanvas(false);
+            PlayTransitionAnimation(false);
+
+            yield return new WaitUntil(() => !_transitionAnimationComponent.isPlaying);
+
             ToggleEventSystem(true);
+
+            ToggleCanvas(false);
+
         }
 
-        private void FadeCanvas(bool state)
+        private void PlayTransitionAnimation(bool state)
         {
-            _fadeTween = DOTween.To(() => _transitionCanvasGroup.alpha, x => _transitionCanvasGroup.alpha = x, state ? 1 : 0, 1f);
+            _transitionAnimationComponent.clip = state? _entranceAnimationClip: _exitAnimationClip;
+            _transitionAnimationComponent.Play();
         }
+
+        private void ToggleCanvas(bool state) => _transitionCanvas.enabled = state;
 
         private void ToggleEventSystem(bool state) => EventSystem.current.enabled = state;
-
 
         #endregion
 

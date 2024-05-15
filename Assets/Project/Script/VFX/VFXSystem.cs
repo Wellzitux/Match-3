@@ -27,20 +27,26 @@ namespace Gazeus.DesafioMatch3
 
         private void OnEnable()
         {
-            GameController.OnBoardAnimationFinished.AddListener(ClearQueue);
             AddVFXToQueu += AddVFX;
             PlayVFXQueue += PlayFromQueu;
+            PlaySingleVFX += PlayVFX;
         }
 
         private void OnDisable()
         {
-            GameController.OnBoardAnimationFinished.RemoveListener(ClearQueue);
             AddVFXToQueu -= AddVFX;
+            PlaySingleVFX -= PlayVFX;
+
         }
 
         #endregion
 
         #region Methods
+
+        public void PlayVFX(VFXType type, Vector2 position)
+        {
+            VFXPoolingSystem.SpawnVFX(type, position);
+        }
 
         public void AddVFX(VFXType type, Vector2 position)
         {
@@ -67,7 +73,8 @@ namespace Gazeus.DesafioMatch3
 
         private void ClearQueue()
         {
-            _vfxQueu.Clear();
+            if ( _vfxQueu!= null)
+                _vfxQueu.Clear();
         }
 
         #endregion

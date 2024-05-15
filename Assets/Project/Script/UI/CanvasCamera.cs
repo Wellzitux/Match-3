@@ -6,6 +6,12 @@ namespace Gazeus.DesafioMatch3
     public class CanvasCamera : MonoBehaviour
     {
 
+        #region Variables
+
+        [SerializeField] bool _changeCanvasLayer;
+        
+        #endregion
+
         #region Unity
 
         private void Awake()
@@ -13,6 +19,11 @@ namespace Gazeus.DesafioMatch3
             Canvas canvas = GetComponent<Canvas>();
             if (!canvas.worldCamera)
                 canvas.worldCamera = Camera.main;
+
+            if (_changeCanvasLayer)
+            {
+                canvas.sortingLayerName = "Foreground";
+            }
         }
 
         #endregion

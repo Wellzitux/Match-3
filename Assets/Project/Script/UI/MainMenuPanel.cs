@@ -10,7 +10,6 @@ namespace Gazeus.DesafioMatch3
 
         [Header("Menu Buttons")]
         [SerializeField] private Button _playButton;
-        [SerializeField] private Button _optionsButton;
 
         #endregion
 
@@ -18,16 +17,12 @@ namespace Gazeus.DesafioMatch3
 
         private void OnEnable()
         {
-
             _playButton.onClick.AddListener(PlayGame);
-            _optionsButton.onClick.AddListener(OpenOptions);
-
         }
 
         private void OnDisable()
         {
             _playButton.onClick.RemoveAllListeners();
-            _optionsButton.onClick.RemoveAllListeners();
         }
 
         #endregion
@@ -37,11 +32,6 @@ namespace Gazeus.DesafioMatch3
         private void PlayGame()
         {
             TransitionController.StartTransition(SceneListEnum.LoadableScenes.GAMEPLAY);
-        }
-
-        private void OpenOptions()
-        {
-            OptionsPanel.OpenOptions?.Invoke(true);
         }
 
         #endregion

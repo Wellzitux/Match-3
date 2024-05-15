@@ -9,5 +9,6 @@ namespace Gazeus.DesafioMatch3.Models
         public List<AddedTileInfo> AddedTiles { get; set; }
         public List<Vector2Int> MatchedPosition { get; set; }
         public List<Vector2Int> ExplosionPosition { get; set; }
+
     }
 }

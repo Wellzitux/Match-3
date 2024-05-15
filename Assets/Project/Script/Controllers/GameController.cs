@@ -21,9 +21,10 @@ namespace Gazeus.DesafioMatch3.Controllers
         private int _selectedX = -1;
         private int _selectedY = -1;
 
-        public static UnityEvent OnBoardAnimationFinished = new UnityEvent();
+        public static UnityEvent<bool> OnBoardAnimateStateChanged = new UnityEvent<bool>();
 
         #region Unity
+
         private void Awake()
         {
             _gameEngine = new GameService();
@@ -49,7 +50,7 @@ namespace Gazeus.DesafioMatch3.Controllers
             Sequence sequence = DOTween.Sequence();
             sequence.Append(_boardView.DestroyTiles(boardSequence.MatchedPosition, boardSequence.ExplosionPosition));
             sequence.Append(_boardView.MoveTiles(boardSequence.MovedTiles));
-            sequence.Append(_boardView.CreateTile(boardSequence.AddedTiles)).SetDelay(1);
+            sequence.Append(_boardView.CreateTile(boardSequence.AddedTiles));
 
             index += 1;
             if (index < boardSequences.Count)
@@ -59,7 +60,6 @@ namespace Gazeus.DesafioMatch3.Controllers
             else
             {
                 sequence.onComplete += () => onComplete();
-                OnBoardAnimationFinished?.Invoke();
             }
         }
 
@@ -76,18 +76,18 @@ namespace Gazeus.DesafioMatch3.Controllers
                 }
                 else
                 {
-                    _isAnimating = true;
+                    ChangeBoardAnimationState(true);
                     _boardView.SwapTiles(_selectedX, _selectedY, x, y).onComplete += () =>
                     {
                         bool isValid = _gameEngine.IsValidMovement(_selectedX, _selectedY, x, y);
                         if (isValid)
                         {
                             List<BoardSequence> swapResult = _gameEngine.SwapTile(_selectedX, _selectedY, x, y);
-                            AnimateBoard(swapResult, 0, () => _isAnimating = false);
+                            AnimateBoard(swapResult, 0, () => ChangeBoardAnimationState(false));
                         }
                         else
                         {
-                            _boardView.SwapTiles(x, y, _selectedX, _selectedY).onComplete += () => _isAnimating = false;
+                            _boardView.SwapTiles(x, y, _selectedX, _selectedY).onComplete += () => ChangeBoardAnimationState(false);
                         }
                         _selectedX = -1;
                         _selectedY = -1;
@@ -99,6 +99,12 @@ namespace Gazeus.DesafioMatch3.Controllers
                 _selectedX = x;
                 _selectedY = y;
             }
+        }
+
+        private void ChangeBoardAnimationState(bool state)
+        {
+            _isAnimating = state;
+            OnBoardAnimateStateChanged?.Invoke(_isAnimating);
         }
     }
 }

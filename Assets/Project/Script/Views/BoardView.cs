@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Gazeus.DesafioMatch3.Controllers;
 using Gazeus.DesafioMatch3.Models;
 using Gazeus.DesafioMatch3.ScriptableObjects;
 using UnityEngine;
@@ -15,9 +16,26 @@ namespace Gazeus.DesafioMatch3.Views
         [SerializeField] private GridLayoutGroup _boardContainer;
         [SerializeField] private TilePrefabRepository _tilePrefabRepository;
         [SerializeField] private TileSpotView _tileSpotPrefab;
+        [SerializeField] private TweenData _tweenData;
+        private Transform _currentActiveTile;
+        [SerializeField] private Transform _square;
 
         private GameObject[][] _tiles;
         private TileSpotView[][] _tileSpots;
+        private bool _boardIsAnimating;
+
+        #region Unity
+
+        private void OnEnable()
+        {
+            GameController.OnBoardAnimateStateChanged.AddListener(UpdateBoardState);
+        }
+        private void OnDisable()
+        {
+            GameController.OnBoardAnimateStateChanged.RemoveListener(UpdateBoardState);
+        }
+
+        #endregion
 
         public void CreateBoard(List<List<Tile>> board)
         {
@@ -36,7 +54,7 @@ namespace Gazeus.DesafioMatch3.Views
                     tileSpot.transform.SetParent(_boardContainer.transform, false);
                     tileSpot.SetPosition(x, y);
                     tileSpot.Clicked += TileSpot_Clicked;
-
+                    tileSpot.Active += ActiveTileVisual;
                     _tileSpots[y][x] = tileSpot;
 
                     int tileTypeIndex = board[y][x].Type;
@@ -45,7 +63,6 @@ namespace Gazeus.DesafioMatch3.Views
                         GameObject tilePrefab = _tilePrefabRepository.TileTypePrefabList[tileTypeIndex];
                         GameObject tile = Instantiate(tilePrefab);
                         tileSpot.SetTile(tile);
-
                         _tiles[y][x] = tile;
                     }
                 }
@@ -79,12 +96,25 @@ namespace Gazeus.DesafioMatch3.Views
         {
             for (int i = 0; i < bombPositions.Count; i++)
             {
-                VFXPoolingSystem.SpawnVFX(VFXType.Explosion, new Vector3(bombPositions[i].x, bombPositions[i].y, 0));
+                VFXSystem.PlaySingleVFX?.Invoke(
+                VFXType.Explosion,
+                            new Vector2(
+                _tiles[bombPositions[i].x][bombPositions[i].y].transform.parent.transform.localPosition.x,
+                _tiles[bombPositions[i].x][bombPositions[i].y].transform.parent.transform.localPosition.y));
+
+                GameplayCanvasVisual.ExplosionShake?.Invoke();
             }
+
             for (int i = 0; i < matchedPosition.Count; i++)
             {
                 Vector2Int position = matchedPosition[i];
-                VFXPoolingSystem.SpawnVFX?.Invoke(VFXType.MatchVFX,new Vector3(_tiles[position.y][position.x].transform.parent.transform.localPosition.x, _tiles[position.y][position.x].transform.parent.transform.localPosition.y, 0));
+
+                VFXSystem.PlaySingleVFX?.Invoke(
+                    VFXType.MatchVFX,
+                    new Vector2(
+                        _tiles[position.y][position.x].transform.parent.transform.localPosition.x,
+                        _tiles[position.y][position.x].transform.parent.transform.localPosition.y));
+                
                 Destroy(_tiles[position.y][position.x]);
                 _tiles[position.y][position.x] = null;
             }
@@ -132,11 +162,61 @@ namespace Gazeus.DesafioMatch3.Views
             return sequence;
         }
 
+        private void ActiveTileVisual(Transform transform)
+        {
+            if (_boardIsAnimating)
+                return;
+
+            if (_currentActiveTile == null)
+            {
+                _square.position = transform.position;
+                _square.gameObject.SetActive(true);
+
+                _currentActiveTile = transform;
+            }
+            else if (_currentActiveTile == transform)
+            {
+                _square.gameObject.SetActive(false);
+
+                _currentActiveTile = null;
+            }
+            else if(_currentActiveTile != transform)
+            {
+                _square.gameObject.SetActive(false);
+
+                _currentActiveTile = null;
+            }
+            else
+            {
+                _square.position = transform.position;
+                _square.gameObject.SetActive(true);
+                _currentActiveTile = transform;
+            }
+        }
+
+        private void DeactivateTileVisual(bool state)
+        {
+            if (!state)
+                return;
+            _square.gameObject.SetActive(false);
+            _currentActiveTile = null;
+        }
+
+        private void UpdateBoardState(bool state)
+        {
+            _boardIsAnimating = state;
+            DeactivateTileVisual(state);
+        }
+
         #region Events
         private void TileSpot_Clicked(int x, int y)
         {
             TileClicked(x, y);
+            // Aqui eu mando qual tile esta selecionado;
+
         }
+
         #endregion
+
     }
 }
